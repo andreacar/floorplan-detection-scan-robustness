@@ -9,6 +9,18 @@
 ## Dataset placement
 See `docs/DATASET.md`.
 
+## Stable checkpoint assets
+The public repository does not track the large pinned checkpoints in git history.
+If you publish them through GitHub Releases, unpack them under:
+
+- `stable_runs/20260115_134958/exp1_clean/`
+- `stable_runs/20260115_134958/exp2_scanned/`
+
+The expected model directories are:
+
+- `stable_runs/20260115_134958/exp1_clean/checkpoints/best`
+- `stable_runs/20260115_134958/exp2_scanned/checkpoints/best`
+
 ## What to reproduce
 - Table 1: CAD-only vs Scanned-only (RT-DETR)
 - ROI isolation table: geometry vs background

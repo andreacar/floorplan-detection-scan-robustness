@@ -32,6 +32,30 @@ Recommended dataset citation:
 Carrara, A., Nousias, S., & Borrmann, A. (2026). CubiCasa5k-ScanShift (v1.0.0) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.18890484
 ```
 
+## Stable Checkpoints
+
+The public GitHub release can also carry the stable RT-DETR runs as release assets. The recommended assets are the
+full experiment-root archives, not isolated weight files, because the code expects Hugging Face checkpoint directories
+and the experiment roots also preserve run metadata.
+
+Recommended release assets:
+
+- `exp1_clean_stable_run.tar.gz`
+- `exp2_scanned_stable_run.tar.gz`
+
+After downloading and unpacking them:
+
+```bash
+mkdir -p stable_runs/20260115_134958
+tar -xzf exp1_clean_stable_run.tar.gz -C stable_runs/20260115_134958
+tar -xzf exp2_scanned_stable_run.tar.gz -C stable_runs/20260115_134958
+```
+
+This restores the checkpoint directories expected by the public evaluation commands:
+
+- `stable_runs/20260115_134958/exp1_clean/checkpoints/best`
+- `stable_runs/20260115_134958/exp2_scanned/checkpoints/best`
+
 Note: the *training* backend used during development lived in a separate RT-DETR checkout. That training code is not required
 to reproduce results from the pinned checkpoints under `stable_runs/`, and training-dependent suites are conditionally handled by the runner.
 
@@ -46,7 +70,7 @@ to reproduce results from the pinned checkpoints under `stable_runs/`, and train
 ## If you want results quickly
 
 The commands below assume you also have the local pinned checkpoint assets used during paper preparation.
-Those large artifacts are not tracked in the public GitHub repository.
+Those large artifacts are not tracked in the public GitHub repository, but they can be distributed as GitHub release assets.
 
 ### 1) Full internal submission validation run
 
