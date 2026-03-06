@@ -1,8 +1,12 @@
 import argparse
+import os
+import sys
 from pathlib import Path
 
 import torch
 from PIL import Image
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from utils.inference_helpers import (
     DEFAULT_IMAGE_NAME,
