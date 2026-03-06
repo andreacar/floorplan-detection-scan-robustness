@@ -1,8 +1,23 @@
-# floorplan_robustness_paper
+# floorplan-detection-scan-robustness
 
 Code + scripts for the floorplan detection robustness paper experiments (RT-DETR focus).
 
 This repository is organized as a **paper pipeline**: dataset loaders, evaluation/analysis scripts, and figure/table generation.
+
+## Dataset Release
+
+The dataset companion release for this repository is published on Zenodo:
+
+- Dataset: `CubiCasa5k-ScanShift`
+- Version-specific DOI: `10.5281/zenodo.18890484`
+- Concept DOI (all versions): `10.5281/zenodo.18890483`
+- Record URL: `https://doi.org/10.5281/zenodo.18890484`
+
+Recommended dataset citation:
+
+```text
+Carrara, A., Nousias, S., & Borrmann, A. (2026). CubiCasa5k-ScanShift (v1.0.0) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.18890484
+```
 
 Note: the *training* backend used during development lived in a separate RT-DETR checkout. That training code is not required
 to reproduce results from the pinned checkpoints under `stable_runs/`, and training-dependent suites are conditionally handled by the runner.
