@@ -6,6 +6,11 @@ import os
 from typing import List, Tuple
 from datetime import datetime
 
+from utils.dataset_release import (
+    DATASET_CACHE_DIR_ENV,
+    resolve_default_dataset_base_dir,
+)
+
 # Single-file config mode:
 # - Prefer env vars at runtime.
 # - Otherwise, set DEFAULT_BASE_DIR below once and forget about YAML/env.
@@ -83,13 +88,17 @@ BASE_DIR = (
     or os.environ.get("BASE_DIR")
     or _LOCAL_BASE_DIR
     or DEFAULT_BASE_DIR
+    or resolve_default_dataset_base_dir()
 )
 if not BASE_DIR:
     raise ValueError(
         "BASE_DIR is not set. Either:\n"
         "- set env var `DATASET_BASE_DIR` (or `BASE_DIR`), or\n"
         "- set `DEFAULT_BASE_DIR` in `configs/config.py`, or\n"
-        "- create `configs/config_local.py` (see `configs/config_local_example.py`)."
+        "- create `configs/config_local.py` (see `configs/config_local_example.py`), or\n"
+        "- download the published Zenodo dataset once with `python tools/fetch_dataset.py`.\n\n"
+        f"If the dataset is present in the default cache, it is discovered automatically.\n"
+        f"Optional cache override: `{DATASET_CACHE_DIR_ENV}=/path/to/cache`."
     )
 
 TRAIN_TXT = os.environ.get("TRAIN_TXT") or os.path.join(BASE_DIR, "train.txt")

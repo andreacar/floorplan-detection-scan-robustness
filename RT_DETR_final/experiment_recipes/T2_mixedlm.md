@@ -31,7 +31,7 @@ Command example:
 ```
 RUN_NAME=t2_mixedlm_$(date +%Y%m%d_%H%M%S) \
 RUN_EXPERIMENTS=scanned \
-TRAIN_TXT=/media/andrea/CubiCasaVec_data/train_mixedlm.txt \
+TRAIN_TXT=/path/to/train_mixedlm.txt \
 SCANNED_INIT_WEIGHTS_DIR=/path/to/runs/<B0>/exp2_scanned/checkpoints/best \
 EPOCHS=3 \
 LR=1e-5 \

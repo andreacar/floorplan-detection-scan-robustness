@@ -145,7 +145,7 @@ Alternative:
 
 ```bash
 python paper_experiments/hq_pairs_debug.py \
-  --folder /media/andrea/CubiCasaVec_data/high_quality/8731
+  --folder /path/to/dataset/high_quality/8731
 ```
 
 ## Notes

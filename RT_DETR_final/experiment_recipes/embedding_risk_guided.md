@@ -5,18 +5,18 @@ Purpose
 
 Preparation
 1. Export a CSV with one row per layout, e.g.: `high_quality_architectural/123,0.72`. The value is a normalized (`0..1`) version of your ROI distance (e.g., percentile or min-max). Keep the format `layout_path,score` where `layout_path` matches the relative path in `train.txt`.
-2. Place the CSV somewhere in the repo, e.g. `/home/andrea/PycharmProjects/CubiCasaVec/RT_DETR_final/experiment_data/dist_scores.csv`.
+2. Place the CSV somewhere in the repo, e.g. `RT_DETR_final/experiment_data/dist_scores.csv`.
 
 Command
 ```
 cd RT_DETR_final
 RUN_NAME=emb_risk_alpha1_$(date +%Y%m%d_%H%M%S) \
 RUN_EXPERIMENTS=scanned \
-SCANNED_INIT_WEIGHTS_DIR=/home/andrea/PycharmProjects/CubiCasaVec/RT_DETR_final/runs/20260115_134958/exp2_scanned/checkpoints/best \
+SCANNED_INIT_WEIGHTS_DIR=/path/to/runs/20260115_134958/exp2_scanned/checkpoints/best \
 SUBSET_TRAIN=400 \
 EPOCHS=1 \
 LR=1e-5 \
-DISTANCE_SCORE_FILE=/home/andrea/PycharmProjects/CubiCasaVec/RT_DETR_final/experiment_data/dist_scores.csv \
+DISTANCE_SCORE_FILE=experiment_data/dist_scores.csv \
 DISTANCE_SCORE_ALPHA=1.0 \
 python train.py
 ```

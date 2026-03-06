@@ -12,8 +12,8 @@ Command (after the paired loader is wired in—see the next section)
 cd RT_DETR_final
 RUN_NAME=emb_paired_inv_$(date +%Y%m%d_%H%M%S) \
 RUN_EXPERIMENTS=scanned \
-TRAIN_TXT=/home/andrea/PycharmProjects/CubiCasaVec/RT_DETR_final/experiment_data/paired_layouts.txt \
-SCANNED_INIT_WEIGHTS_DIR=/home/andrea/PycharmProjects/CubiCasaVec/RT_DETR_final/runs/20260115_134958/exp2_scanned/checkpoints/best \
+TRAIN_TXT=experiment_data/paired_layouts.txt \
+SCANNED_INIT_WEIGHTS_DIR=/path/to/runs/20260115_134958/exp2_scanned/checkpoints/best \
 SUBSET_TRAIN=400 \
 EPOCHS=1 \
 LR=1e-5 \

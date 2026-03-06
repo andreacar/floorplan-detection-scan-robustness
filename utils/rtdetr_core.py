@@ -202,10 +202,12 @@ def import_core_main_3_experiments(repo_root: str | Path):
                 f"{msg}\n\n"
                 "Fix options:\n"
                 "1) Set `DATASET_BASE_DIR` (or `BASE_DIR`) to your CubiCasa dataset root.\n"
-                "2) Or set `DEFAULT_BASE_DIR` in `configs/config.py`.\n\n"
+                "2) Or set `DEFAULT_BASE_DIR` in `configs/config.py`.\n"
+                "3) Or fetch the published Zenodo dataset once into the default cache.\n\n"
                 "Examples:\n"
                 "- python training/train.py --preset clean --base-dir /path/to/cubicasa\n"
                 "- python training/train.py --preset clean --set DATASET_BASE_DIR=/path/to/cubicasa\n"
+                "- python tools/fetch_dataset.py\n"
             )
             raise ValueError(hint) from e
         raise

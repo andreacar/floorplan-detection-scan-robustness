@@ -3,9 +3,10 @@
 Do not commit raw datasets to Git.
 
 ## 1) Obtain the data
-- CubiCasa-style floorplan data with `graph.json` annotations.
-- Paired scanned raster counterpart per layout.
-- Ensure you have rights to use/distribute the data for your venue.
+- Explicit fetch command: `python tools/fetch_dataset.py`
+- After download, the repo automatically discovers the dataset in its default cache.
+- Remote-only availability check: `python tools/fetch_dataset.py --check-remote`
+- Manual override is still supported if you already have a local CubiCasa-style dataset checkout.
 
 ## 2) Expected directory layout
 
@@ -39,6 +40,13 @@ Either:
 - `export DATASET_BASE_DIR=/path/to/dataset`
 
 Or create `configs/config_local.py` from `configs/config_local_example.py` and set `DEFAULT_BASE_DIR`.
+
+If you want to keep the automatic download but store it somewhere else:
+- `export FLOORPLAN_DATASET_CACHE_DIR=/path/to/cache`
+
+After `python tools/fetch_dataset.py`, the script prints the extracted dataset root. You can then either:
+- rely on the default cache automatically, or
+- pin the downloaded dataset explicitly with `export DATASET_BASE_DIR=/resolved/dataset/root`
 
 ## 4) Generate A/B/C/D variants (if missing)
 

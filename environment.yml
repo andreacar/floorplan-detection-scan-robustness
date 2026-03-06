@@ -1,4 +1,4 @@
-name: floorplan_robustness_paper
+name: floorplan-detection-scan-robustness
 channels:
   - pytorch
   - pyg
@@ -17,5 +17,5 @@ dependencies:
   - pycocotools
   - pytorch
   - torchvision
-  - torch_geometric
+  - pyg
   - transformers

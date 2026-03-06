@@ -4,7 +4,7 @@ Purpose
 - Re-run the existing clean/scanned pipeline so you can compare every later experiment against the same checkpoints and metric output (clean CAD validation vs. scanned validation).
 
 Setup
-- Datasets: `TRAIN_TXT` = `/media/andrea/CubiCasaVec_data/train.txt`; `VAL_TXT` = `/media/andrea/CubiCasaVec_data/val.txt` (scanned layouts); clean validation comes from the `exp1_clean` run because that same `val.txt` is evaluated with `IMAGE_FILENAME=model_baked.png`.
+- Datasets: `TRAIN_TXT` = `<DATASET_BASE_DIR>/train.txt`; `VAL_TXT` = `<DATASET_BASE_DIR>/val.txt` (scanned layouts); clean validation comes from the `exp1_clean` run because that same `val.txt` is evaluated with `IMAGE_FILENAME=model_baked.png`.
 - Seed: `42` (default).
 - Default training recipe: `EPOCHS=100`, `LR=1e-4`, `AUGMENT_SCAN_MIX_ENABLE=0`, `AUGMENT_STROKE_ENABLE=0`, `SUBSET_* = 0`.
 

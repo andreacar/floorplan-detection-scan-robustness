@@ -2,24 +2,24 @@
   "table_subset_softmax.csv": {
     "rows": 2,
     "source": [
-      "/home/andrea/PycharmProjects/floorplan_robustness_paper/artifacts/tables/table_subset_softmax_exp1_clean_test_window_door.json",
-      "/home/andrea/PycharmProjects/floorplan_robustness_paper/artifacts/tables/table_subset_softmax_exp2_scanned_test_window_door.json"
+      "artifacts/tables/table_subset_softmax_exp1_clean_test_window_door.json",
+      "artifacts/tables/table_subset_softmax_exp2_scanned_test_window_door.json"
     ]
   },
   "table_roi_ab_on_cd.csv": {
     "rows": 4,
-    "source": "/home/andrea/PycharmProjects/floorplan_robustness_paper/AB_on_CD_results/ALL_AB_ON_CD_RESULTS.json"
+    "source": "AB_on_CD_results/ALL_AB_ON_CD_RESULTS.json"
   },
   "table_error_decomposition.csv": {
     "rows": 2,
-    "source": "/home/andrea/PycharmProjects/floorplan_robustness_paper/paper_experiments/out/error_compare/summary.json"
+    "source": "paper_experiments/out/error_compare/summary.json"
   },
   "table_size_success.csv": {
     "rows": 2,
-    "source": "/home/andrea/PycharmProjects/floorplan_robustness_paper/paper_experiments/out/size_compare/summary.json"
+    "source": "paper_experiments/out/size_compare/summary.json"
   },
   "table_factorized_degradation.csv": {
     "rows": 13,
-    "source": "/home/andrea/PycharmProjects/floorplan_robustness_paper/paper_experiments/out/factorized_pinned/summary.json"
+    "source": "paper_experiments/out/factorized_pinned/summary.json"
   }
 }

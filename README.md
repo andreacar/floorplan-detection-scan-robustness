@@ -4,6 +4,19 @@ Code + scripts for the floorplan detection robustness paper experiments (RT-DETR
 
 This repository is organized as a **paper pipeline**: dataset loaders, evaluation/analysis scripts, and figure/table generation.
 
+## Install
+
+```bash
+conda env create -f environment.yml
+conda activate floorplan-detection-scan-robustness
+python tools/fetch_dataset.py --check-remote
+python tools/fetch_dataset.py
+python -c "import config as c; print(c.BASE_DIR)"
+python diagnostic/render_4_variants.py --help
+```
+
+If you already have a compatible local environment, replace the environment name accordingly.
+
 ## Dataset Release
 
 The dataset companion release for this repository is published on Zenodo:
@@ -32,7 +45,10 @@ to reproduce results from the pinned checkpoints under `stable_runs/`, and train
 
 ## If you want results quickly
 
-### 1) Full submission validation run (recommended)
+The commands below assume you also have the local pinned checkpoint assets used during paper preparation.
+Those large artifacts are not tracked in the public GitHub repository.
+
+### 1) Full internal submission validation run
 
 ```bash
 bash tools/test_submission_full.sh gdino
@@ -71,12 +87,21 @@ conda run -n gdino python -m evaluation.test_AB_on_CD \
 
 1) Create an environment (see `environment.yml`).
 
-2) Point the code at your dataset root:
+2) Get the dataset:
+
+- Explicit fetch: `python tools/fetch_dataset.py`
+- After download, the repo automatically reuses the default cache at
+  `~/.cache/floorplan-detection-scan-robustness/datasets/` unless you override it.
+- Remote availability check without downloading the archive: `python tools/fetch_dataset.py --check-remote`
+
+3) Point the code at your dataset root if you want to override the default cache:
 
 - Recommended: copy `configs/config_local_example.py` → `configs/config_local.py` and set `DEFAULT_BASE_DIR`.
 - Or set `DATASET_BASE_DIR=/path/to/dataset` in your shell.
+- Or set `FLOORPLAN_DATASET_CACHE_DIR=/path/to/cache` to keep the automatic download in a different cache location.
+- After `python tools/fetch_dataset.py`, the script prints the resolved extracted dataset root and an `export DATASET_BASE_DIR=...` line you can reuse.
 
-3) Run a training preset (examples):
+4) Run a training preset (examples):
 
 ```bash
 # CAD-only / clean regime (A→A)
@@ -106,6 +131,11 @@ Many experiments switch which “render variant” to use via `config.IMAGE_FILE
 
 To generate `four_final_variants/*` inside each drawing folder, use `diagnostic/render_4_variants.py`
 with `--root-data /path/to/dataset/<split_dir>` (and optional `--config <yaml>` defaults).
+
+The published dataset release used by default is:
+- Dataset: `CubiCasa5k-ScanShift`
+- Version-specific DOI: `10.5281/zenodo.18890484`
+- Concept DOI (all versions): `10.5281/zenodo.18890483`
 
 ## Configuration model (how scripts share settings)
 
@@ -182,7 +212,7 @@ These runs are analytical interventions rather than a standalone method contribu
 failure mechanisms described in the paper section “Mechanism-Driven Mitigation Experiments”.
 
 Canonical reference implementation (upstream in your CubiCasaVec checkout):
-- `/home/andrea/PycharmProjects/CubiCasaVec/RT_DETR_final/experiment_recipes/mechanism_mitigation/run_mechanism_mitigation.sh`
+- `<your CubiCasaVec checkout>/RT_DETR_final/experiment_recipes/mechanism_mitigation/run_mechanism_mitigation.sh`
 
 This repo includes a wrapper with the **same four arms** but wired to this repo’s training entrypoint:
 - `mitigation/run_mechanism_mitigation.sh`
@@ -221,7 +251,10 @@ You will commonly see:
 
 ## Troubleshooting
 
-- “`BASE_DIR is not set`”: set `DATASET_BASE_DIR` or create `configs/config_local.py`.
+- “`BASE_DIR is not set`”: set `DATASET_BASE_DIR`, create `configs/config_local.py`, or leave
+  the downloaded dataset in the default cache after running `python tools/fetch_dataset.py`.
+- “Pinned checkpoint commands fail”: `stable_runs/` and other paper-preparation assets are not included in the public GitHub repo.
+  Public users can use the dataset tooling and code pipeline, but the exact pinned internal reproduction commands require separate checkpoint assets.
 - Import errors like `ModuleNotFoundError: data`: ensure the RT-DETR project checkout that provides `data/`,
   `eval/`, and `RT_DETR_final.main_3_experiments` is on `PYTHONPATH` (or set `RT_DETR_FINAL_DIR` accordingly).
 - CPU-only: many scripts auto-fall back to CPU, but runtime will be slow; pass `--device cpu` where supported.

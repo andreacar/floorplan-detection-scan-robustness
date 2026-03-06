@@ -23,6 +23,9 @@ See `docs/DATASET.md`.
 - Figures: `artifacts/figures/`
 
 ## One-command pipeline
+These commands assume the local pinned checkpoint assets used during paper preparation are present.
+Those artifacts are not included in the public GitHub repository snapshot.
+
 - Dry run (validate command graph):
   `python tools/run_paper.py paper_all --dry`
 - Execute pinned pipeline:
