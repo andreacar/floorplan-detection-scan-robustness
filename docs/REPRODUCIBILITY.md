@@ -21,6 +21,15 @@ The expected model directories are:
 - `stable_runs/20260115_134958/exp1_clean/checkpoints/best`
 - `stable_runs/20260115_134958/exp2_scanned/checkpoints/best`
 
+The public quickcheck also expects:
+
+- `AB_on_CD_results/ALL_AB_ON_CD_RESULTS.json`
+
+If the release assets are published, restore all of them with:
+
+- `python tools/fetch_release_assets.py --check-remote`
+- `python tools/fetch_release_assets.py`
+
 ## What to reproduce
 - Table 1: CAD-only vs Scanned-only (RT-DETR)
 - ROI isolation table: geometry vs background

@@ -11,8 +11,11 @@ conda env create -f environment.yml
 conda activate floorplan-detection-scan-robustness
 python tools/fetch_dataset.py --check-remote
 python tools/fetch_dataset.py
+python tools/fetch_release_assets.py --check-remote
+python tools/fetch_release_assets.py
 python -c "import config as c; print(c.BASE_DIR)"
 python diagnostic/render_4_variants.py --help
+python tools/quickcheck_submission.py --strict
 ```
 
 If you already have a compatible local environment, replace the environment name accordingly.
@@ -42,6 +45,7 @@ Recommended release assets:
 
 - `exp1_clean_stable_run.tar.gz`
 - `exp2_scanned_stable_run.tar.gz`
+- `ab_on_cd_results.tar.gz`
 
 After downloading and unpacking them:
 
@@ -55,6 +59,13 @@ This restores the checkpoint directories expected by the public evaluation comma
 
 - `stable_runs/20260115_134958/exp1_clean/checkpoints/best`
 - `stable_runs/20260115_134958/exp2_scanned/checkpoints/best`
+
+To restore all public quickcheck assets directly from GitHub Releases:
+
+```bash
+python tools/fetch_release_assets.py --check-remote
+python tools/fetch_release_assets.py
+```
 
 Note: the *training* backend used during development lived in a separate RT-DETR checkout. That training code is not required
 to reproduce results from the pinned checkpoints under `stable_runs/`, and training-dependent suites are conditionally handled by the runner.

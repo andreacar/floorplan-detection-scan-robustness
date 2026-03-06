@@ -20,6 +20,17 @@ def _check(cond: bool, label: str, details: str = "") -> Tuple[bool, str]:
     return cond, msg
 
 
+def _resolve_public_dataset_fallback() -> Tuple[Path, Path, str]:
+    try:
+        import config as active_config  # type: ignore
+
+        base_dir = Path(str(getattr(active_config, "BASE_DIR", "")))
+        test_txt = Path(str(getattr(active_config, "TEST_TXT", "")))
+        return base_dir, test_txt, "active config fallback"
+    except Exception:
+        return Path(""), Path(""), "no fallback"
+
+
 def _import_checks() -> List[Tuple[bool, str]]:
     required = [
         "torch",
@@ -78,8 +89,15 @@ def _dataset_checks() -> List[Tuple[bool, str]]:
         cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
         base_dir = Path(str(cfg.get("BASE_DIR", "")))
         test_txt = Path(str(cfg.get("TEST_TXT", "")))
-        out.append(_check(base_dir.exists(), "BASE_DIR reachable", str(base_dir)))
-        out.append(_check(test_txt.exists(), "TEST_TXT reachable", str(test_txt)))
+        source = "pinned config"
+        if not (base_dir.exists() and test_txt.exists()):
+            fallback_base, fallback_test, fallback_source = _resolve_public_dataset_fallback()
+            if fallback_base.exists() and fallback_test.exists():
+                base_dir = fallback_base
+                test_txt = fallback_test
+                source = fallback_source
+        out.append(_check(base_dir.exists(), "BASE_DIR reachable", f"{base_dir} [{source}]"))
+        out.append(_check(test_txt.exists(), "TEST_TXT reachable", f"{test_txt} [{source}]"))
     return out
 
 
