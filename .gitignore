@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+
+configs/config_local.py
+
+AB_on_CD_results/
+runs/
+stable_runs/
+outputs/
+
+artifacts/logs/output_paths_scan.txt
+
+exp1_clean_stable_run.tar.gz
+exp2_scanned_stable_run.tar.gz
+ab_on_cd_results.tar.gz

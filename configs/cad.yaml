@@ -1,0 +1,9 @@
+dataset_path: /path/to/cubicasa
+train_split: train.txt
+val_split: val.txt
+num_classes: 6
+image_size: 1024
+batch_size: 8
+epochs: 100
+learning_rate: 1e-4
+output_dir: outputs/

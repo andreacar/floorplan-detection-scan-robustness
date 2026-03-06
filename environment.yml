@@ -1,0 +1,21 @@
+name: floorplan-detection-scan-robustness
+channels:
+  - pytorch
+  - pyg
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pyyaml
+  - pillow
+  - tqdm
+  - matplotlib
+  - pandas
+  - scikit-learn
+  - statsmodels
+  - pycocotools
+  - pytorch
+  - torchvision
+  - pyg
+  - transformers

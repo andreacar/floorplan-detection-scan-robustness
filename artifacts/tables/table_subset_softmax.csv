@@ -1,0 +1,3 @@
+source_file,run_name,split,classes,AP,AP50,AP75,AR_100
+artifacts/tables/table_subset_softmax_exp1_clean_test_window_door.json,exp1_clean,test,"WINDOW,DOOR",0.807394,0.831672,0.823514,0.960401
+artifacts/tables/table_subset_softmax_exp2_scanned_test_window_door.json,exp2_scanned,test,"WINDOW,DOOR",0.522073,0.750625,0.598780,0.664754
