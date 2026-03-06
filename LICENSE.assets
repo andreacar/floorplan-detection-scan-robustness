@@ -1,0 +1,21 @@
+Dataset-derived assets, trained weights, released result bundles, and example figures
+in this repository are not covered by the repository's MIT software license.
+
+These materials are distributed under the conservative non-commercial terms implied by
+the upstream CubiCasa5k license:
+
+Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+https://creativecommons.org/licenses/by-nc/4.0/
+
+This includes, where present:
+- trained checkpoints derived from CubiCasa5k / CubiCasa5k-ScanShift data
+- result bundles generated from those checkpoints on the dataset
+- example figures or visualizations derived from CubiCasa5k / CubiCasa5k-ScanShift layouts
+- other dataset-derived release assets
+
+Upstream source:
+- CubiCasa5k license: https://github.com/CubiCasa/CubiCasa5k/blob/master/LICENSE
+
+If you intend to use such materials commercially, do not rely on the repository's MIT
+license. You must instead ensure that your intended use complies with the upstream
+dataset terms or obtain separate permission from the relevant rights holders.

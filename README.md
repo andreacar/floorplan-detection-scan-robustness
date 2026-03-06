@@ -4,6 +4,12 @@ Code + scripts for the floorplan detection robustness paper experiments (RT-DETR
 
 This repository is organized as a **paper pipeline**: dataset loaders, evaluation/analysis scripts, and figure/table generation.
 
+## Licensing
+
+- Source code in this repository is released under the MIT license. See [LICENSE](LICENSE).
+- Dataset-derived assets are not MIT. Trained weights, released result bundles, and example figures derived from CubiCasa5k / CubiCasa5k-ScanShift are distributed under non-commercial terms aligned with the upstream dataset license. See [LICENSE.assets](LICENSE.assets).
+- The dataset release itself is published separately on Zenodo under `CC BY-NC 4.0`: `https://doi.org/10.5281/zenodo.18890484`
+
 ## Install
 
 ```bash
@@ -96,6 +102,9 @@ data construction logic, model context, and failure analysis path without openin
 The public GitHub release can also carry the stable RT-DETR runs as release assets. The recommended assets are the
 full experiment-root archives, not isolated weight files, because the code expects Hugging Face checkpoint directories
 and the experiment roots also preserve run metadata.
+
+Licensing note: if you publish or download the checkpoint assets, treat them as dataset-derived non-commercial assets,
+not as MIT-licensed software. See [LICENSE.assets](LICENSE.assets).
 
 Recommended release assets:
 
