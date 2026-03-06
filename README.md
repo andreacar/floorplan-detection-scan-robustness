@@ -126,6 +126,72 @@ python tools/fetch_release_assets.py
 Note: the *training* backend used during development lived in a separate RT-DETR checkout. That training code is not required
 to reproduce results from the pinned checkpoints under `stable_runs/`, and training-dependent suites are conditionally handled by the runner.
 
+## Inference Recipes
+
+The public inference helpers assume you have already restored the published checkpoint assets:
+
+```bash
+python tools/fetch_release_assets.py
+```
+
+### Run inference on one drawing from the dataset
+
+Extract one drawing folder from a split file, then run inference on the scanned raster:
+
+```bash
+DRAWING_REL=$(sed -n '1p' "$DATASET_BASE_DIR/test.txt")
+DRAWING_DIR="$DATASET_BASE_DIR/${DRAWING_REL#/}"
+
+python tools/infer_drawing.py \
+  --checkpoint-dir stable_runs/20260115_134958/exp2_scanned/checkpoints/best \
+  --input-path "$DRAWING_DIR" \
+  --image-name F1_scaled.png \
+  --out-dir outputs/inference_one_scan
+```
+
+Useful image variants inside a drawing folder:
+
+- clean CAD raster: `model_baked.png`
+- scanned raster: `F1_scaled.png`
+- ROI-only scanned interior: `four_final_variants/03_scan_inside_boxes.png`
+- clean geometry plus scanned background: `four_final_variants/04_svg_clean_plus_scan_outside.png`
+
+### Run inference on several drawings from a dataset split
+
+This writes one overlay image and one JSON prediction file per drawing:
+
+```bash
+python tools/infer_split.py \
+  --checkpoint-dir stable_runs/20260115_134958/exp2_scanned/checkpoints/best \
+  --split-file "$DATASET_BASE_DIR/test.txt" \
+  --base-dir "$DATASET_BASE_DIR" \
+  --image-name F1_scaled.png \
+  --max-items 25 \
+  --out-dir outputs/inference_test_scan
+```
+
+Swap `--image-name` to compare the same checkpoint on the clean raster or the C/D causal variants.
+
+### Run inference on a new drawing image
+
+For an external floor-plan image that is not part of the dataset:
+
+```bash
+python tools/infer_drawing.py \
+  --checkpoint-dir stable_runs/20260115_134958/exp2_scanned/checkpoints/best \
+  --input-path /path/to/new_floorplan.png \
+  --out-dir outputs/inference_new_drawing \
+  --score-thresh 0.2 \
+  --topk 100
+```
+
+This produces:
+
+- `<stem>_predictions.png`: the image with predicted boxes overlaid
+- `<stem>_predictions.json`: structured predictions with labels, scores, and `xyxy` boxes
+
+If your new input is a drawing folder rather than a single image file, pass the folder path and choose the raster with `--image-name`.
+
 ## Capabilities at a glance
 
 - Reproduce paper metrics from pinned checkpoints (`stable_runs/20260115_134958/...`).
