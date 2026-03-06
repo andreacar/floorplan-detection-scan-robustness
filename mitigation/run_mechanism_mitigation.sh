@@ -1,0 +1,143 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -lt 1 ]]; then
+  echo "Usage: $0 <BASELINE_RUN_DIR>"
+  echo "Example: $0 runs/20260125_224826"
+  exit 1
+fi
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+BASELINE_RUN_DIR="$(cd "$1" && pwd)"
+INIT_DIR="$BASELINE_RUN_DIR/exp2_scanned/checkpoints/best"
+
+if [[ ! -d "$INIT_DIR" ]]; then
+  echo "Missing init checkpoint: $INIT_DIR"
+  exit 1
+fi
+
+PYTHON_BIN="${PYTHON_BIN:-python}"
+TRAIN_MODULE="${TRAIN_MODULE:-training.train}"
+
+# Ensure local imports work when invoked from a shell script.
+export PYTHONPATH="${REPO_DIR}${PYTHONPATH:+:${PYTHONPATH}}"
+
+# Ensure RT-DETR core is discoverable. This repo vendors only partial `RT_DETR_final/`
+# (experiment recipes), while training requires `RT_DETR_final/main_3_experiments.py`.
+if [[ -z "${RT_DETR_FINAL_DIR:-}" ]]; then
+  if [[ ! -f "${REPO_DIR}/RT_DETR_final/main_3_experiments.py" ]]; then
+    REPO_PARENT="$(cd "${REPO_DIR}/.." && pwd)"
+    # Prefer a sibling CubiCasaVec checkout when present.
+    if [[ -f "${REPO_PARENT}/CubiCasaVec/RT_DETR_final/main_3_experiments.py" ]]; then
+      export RT_DETR_FINAL_DIR="${REPO_PARENT}/CubiCasaVec"
+    else
+      for d in "${REPO_PARENT}"/*; do
+        [[ -d "$d" ]] || continue
+        if [[ -f "${d}/RT_DETR_final/main_3_experiments.py" ]]; then
+          export RT_DETR_FINAL_DIR="$d"
+          break
+        fi
+      done
+    fi
+  fi
+fi
+echo "[INFO] PYTHON_BIN=${PYTHON_BIN}"
+echo "[INFO] RT_DETR_FINAL_DIR=${RT_DETR_FINAL_DIR:-<unset>}"
+
+# If a full RT-DETR checkout is available, ensure its modules are importable.
+# Some checkouts import `eval.*` as a top-level package that lives under `RT_DETR_final/eval/`.
+if [[ -n "${RT_DETR_FINAL_DIR:-}" ]]; then
+  export PYTHONPATH="${RT_DETR_FINAL_DIR}:${RT_DETR_FINAL_DIR}/RT_DETR_final${PYTHONPATH:+:${PYTHONPATH}}"
+fi
+
+# Common fine-tune settings (mechanism calibration, not retraining).
+# This is a short fine-tuning run starting from the scanned-only baseline checkpoint (exp2_scanned).
+COMMON_SET=(
+  "SCANNED_INIT_WEIGHTS_DIR=$INIT_DIR"
+  "EPOCHS=5"
+  "LR=1e-5"
+  "AUGMENT_SCAN_MIX_ENABLE=0"
+  "AUGMENT_APPLY_ALL=1"
+)
+
+run_arm () {
+  local run_name="$1"
+  shift
+
+  (
+    cd "$REPO_DIR"
+    "$PYTHON_BIN" -m "$TRAIN_MODULE" \
+      --preset scan \
+      --run-name "$run_name" \
+      $(printf -- ' --set %q' "${COMMON_SET[@]}") \
+      $(printf -- ' --set %q' "$@")
+  )
+}
+
+# Arm A: Boundary Instability (box jitter + expansion)
+RUN_NAME="mech_A_boundary_$(date +%Y%m%d_%H%M%S)"
+run_arm "$RUN_NAME" \
+  "AUGMENT_BOX_JITTER_ENABLE=1" \
+  "AUGMENT_BOX_JITTER_PX=4" \
+  "AUGMENT_BOX_JITTER_SCALE=0.05" \
+  "AUGMENT_BOX_EXPAND_RATIO=0.05" \
+  "AUGMENT_STROKE_ENABLE=0" \
+  "AUGMENT_DEPICTION_ENABLE=0" \
+  "AUGMENT_LINE_DROPOUT_ENABLE=0"
+
+# Arm B: Thin Structure Survival (erosion + line dropout)
+RUN_NAME="mech_B_thin_$(date +%Y%m%d_%H%M%S)"
+run_arm "$RUN_NAME" \
+  "AUGMENT_BOX_JITTER_ENABLE=0" \
+  "AUGMENT_BOX_EXPAND_RATIO=0.0" \
+  "AUGMENT_STROKE_ENABLE=1" \
+  "AUGMENT_STROKE_PROB=0.8" \
+  "AUGMENT_STROKE_DILATE_PROB=0.0" \
+  "AUGMENT_STROKE_KERNEL_SIZES=1,2" \
+  "AUGMENT_STROKE_KERNEL_PROBS=0.6,0.4" \
+  "AUGMENT_STROKE_SIGMA_RANGE=0.0,0.6" \
+  "AUGMENT_LINE_DROPOUT_ENABLE=1" \
+  "AUGMENT_LINE_DROPOUT_PROB=0.6" \
+  "AUGMENT_LINE_DROPOUT_COUNT_RANGE=4,12" \
+  "AUGMENT_LINE_DROPOUT_WIDTH_RANGE=1,2" \
+  "AUGMENT_DEPICTION_ENABLE=0"
+
+# Arm C: Depiction Deformation (dilate -> blur -> threshold)
+RUN_NAME="mech_C_depiction_$(date +%Y%m%d_%H%M%S)"
+run_arm "$RUN_NAME" \
+  "AUGMENT_BOX_JITTER_ENABLE=0" \
+  "AUGMENT_BOX_EXPAND_RATIO=0.0" \
+  "AUGMENT_STROKE_ENABLE=0" \
+  "AUGMENT_LINE_DROPOUT_ENABLE=0" \
+  "AUGMENT_DEPICTION_ENABLE=1" \
+  "AUGMENT_DEPICTION_PROB=0.8" \
+  "AUGMENT_DEPICTION_KERNEL_SIZES=2,3,4" \
+  "AUGMENT_DEPICTION_KERNEL_PROBS=0.2,0.5,0.3" \
+  "AUGMENT_DEPICTION_SIGMA_RANGE=0.8,2.5" \
+  "AUGMENT_DEPICTION_THRESHOLD=170"
+
+# Arm D: Combined (A + B + C, optional)
+RUN_NAME="mech_D_combined_$(date +%Y%m%d_%H%M%S)"
+run_arm "$RUN_NAME" \
+  "AUGMENT_BOX_JITTER_ENABLE=1" \
+  "AUGMENT_BOX_JITTER_PX=3" \
+  "AUGMENT_BOX_JITTER_SCALE=0.04" \
+  "AUGMENT_BOX_EXPAND_RATIO=0.03" \
+  "AUGMENT_STROKE_ENABLE=1" \
+  "AUGMENT_STROKE_PROB=0.6" \
+  "AUGMENT_STROKE_DILATE_PROB=0.2" \
+  "AUGMENT_STROKE_KERNEL_SIZES=1,2,3" \
+  "AUGMENT_STROKE_KERNEL_PROBS=0.4,0.4,0.2" \
+  "AUGMENT_STROKE_SIGMA_RANGE=0.3,1.2" \
+  "AUGMENT_LINE_DROPOUT_ENABLE=1" \
+  "AUGMENT_LINE_DROPOUT_PROB=0.4" \
+  "AUGMENT_LINE_DROPOUT_COUNT_RANGE=3,8" \
+  "AUGMENT_LINE_DROPOUT_WIDTH_RANGE=1,2" \
+  "AUGMENT_DEPICTION_ENABLE=1" \
+  "AUGMENT_DEPICTION_PROB=0.5" \
+  "AUGMENT_DEPICTION_KERNEL_SIZES=2,3,4" \
+  "AUGMENT_DEPICTION_KERNEL_PROBS=0.3,0.4,0.3" \
+  "AUGMENT_DEPICTION_SIGMA_RANGE=0.6,2.0" \
+  "AUGMENT_DEPICTION_THRESHOLD=170"

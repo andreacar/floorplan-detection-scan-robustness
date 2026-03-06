@@ -1,0 +1,5 @@
+model,image_variant,AP,AP50,AP75,AR_100,f1_all_classes,f1_popular_classes
+ModelA_clean_trained,four_final_variants/03_scan_inside_boxes.png,0.081862,0.136341,0.086122,0.209221,0.279431,0.300228
+ModelB_scan_trained,four_final_variants/03_scan_inside_boxes.png,0.375244,0.564044,0.406093,0.536262,0.590687,0.608681
+ModelA_clean_trained,four_final_variants/04_svg_clean_plus_scan_outside.png,0.370796,0.474850,0.414645,0.551574,0.556490,0.586557
+ModelB_scan_trained,four_final_variants/04_svg_clean_plus_scan_outside.png,0.398300,0.548996,0.427908,0.608279,0.628467,0.647798

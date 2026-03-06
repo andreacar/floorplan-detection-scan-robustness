@@ -1,0 +1,30 @@
+# generated/runtime outputs
+outputs/
+runs/
+stable_runs/
+AB_on_CD_results/
+
+# checkpoints
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+
+# logs
+logs/
+wandb/
+tensorboard/
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# local-only config overrides
+configs/config_local.py
+
+# system
+.DS_Store
+.idea/

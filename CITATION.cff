@@ -1,0 +1,7 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the associated paper."
+title: "Why Floor Plan Object Detection Breaks Under Real Scans: A Controlled Study of Robustness Limits"
+authors:
+  - family-names: "Carrara"
+    given-names: "Andrea"
+license: "MIT"

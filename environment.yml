@@ -1,0 +1,21 @@
+name: floorplan_robustness_paper
+channels:
+  - pytorch
+  - pyg
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pyyaml
+  - pillow
+  - tqdm
+  - matplotlib
+  - pandas
+  - scikit-learn
+  - statsmodels
+  - pycocotools
+  - pytorch
+  - torchvision
+  - torch_geometric
+  - transformers

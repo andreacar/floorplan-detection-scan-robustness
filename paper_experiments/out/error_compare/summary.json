@@ -1,0 +1,94 @@
+{
+  "clean": {
+    "counts": {
+      "WALL": {
+        "total": 10612,
+        "missed": 839,
+        "loose": 726,
+        "tight": 9047
+      },
+      "COLUMN": {
+        "total": 1064,
+        "missed": 479,
+        "loose": 61,
+        "tight": 524
+      },
+      "STAIR": {
+        "total": 439,
+        "missed": 41,
+        "loose": 6,
+        "tight": 392
+      },
+      "RAILING": {
+        "total": 1290,
+        "missed": 428,
+        "loose": 110,
+        "tight": 752
+      },
+      "DOOR": {
+        "total": 4146,
+        "missed": 182,
+        "loose": 92,
+        "tight": 3872
+      },
+      "WINDOW": {
+        "total": 3604,
+        "missed": 195,
+        "loose": 18,
+        "tight": 3391
+      }
+    },
+    "overall": {
+      "total": 21155,
+      "missed": 2164,
+      "loose": 1013,
+      "tight": 17978
+    }
+  },
+  "scanned": {
+    "counts": {
+      "WALL": {
+        "total": 10709,
+        "missed": 2481,
+        "loose": 4497,
+        "tight": 3731
+      },
+      "COLUMN": {
+        "total": 1069,
+        "missed": 860,
+        "loose": 174,
+        "tight": 35
+      },
+      "STAIR": {
+        "total": 446,
+        "missed": 129,
+        "loose": 87,
+        "tight": 230
+      },
+      "RAILING": {
+        "total": 1300,
+        "missed": 697,
+        "loose": 425,
+        "tight": 178
+      },
+      "DOOR": {
+        "total": 4176,
+        "missed": 632,
+        "loose": 839,
+        "tight": 2705
+      },
+      "WINDOW": {
+        "total": 3628,
+        "missed": 646,
+        "loose": 1305,
+        "tight": 1677
+      }
+    },
+    "overall": {
+      "total": 21328,
+      "missed": 5445,
+      "loose": 7327,
+      "tight": 8556
+    }
+  }
+}

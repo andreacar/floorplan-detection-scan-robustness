@@ -1,0 +1,46 @@
+{
+  "counts": {
+    "WALL": {
+      "total": 10612,
+      "missed": 839,
+      "loose": 726,
+      "tight": 9047
+    },
+    "COLUMN": {
+      "total": 1064,
+      "missed": 479,
+      "loose": 61,
+      "tight": 524
+    },
+    "STAIR": {
+      "total": 439,
+      "missed": 41,
+      "loose": 6,
+      "tight": 392
+    },
+    "RAILING": {
+      "total": 1290,
+      "missed": 428,
+      "loose": 110,
+      "tight": 752
+    },
+    "DOOR": {
+      "total": 4146,
+      "missed": 182,
+      "loose": 92,
+      "tight": 3872
+    },
+    "WINDOW": {
+      "total": 3604,
+      "missed": 195,
+      "loose": 18,
+      "tight": 3391
+    }
+  },
+  "overall": {
+    "total": 21155,
+    "missed": 2164,
+    "loose": 1013,
+    "tight": 17978
+  }
+}
